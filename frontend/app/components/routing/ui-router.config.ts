@@ -87,6 +87,12 @@ openprojectModule
       .state('work-packages', {
         url: '',
         abstract: true,
+        params: {
+          // value: null makes the parameter optional
+          // squash: true avoids duplicate slashes when the paramter is not provided
+          projectPath: {value: null, squash: true},
+          projects: {value: null, squash: true},
+        },
         templateUrl: '/components/routing/main/work-packages.html',
         controller: 'WorkPackagesController'
       })
@@ -99,12 +105,6 @@ openprojectModule
         reloadOnSearch: false,
         onEnter: () => angular.element('body').addClass('full-create'),
         onExit: () => angular.element('body').removeClass('full-create'),
-        params: {
-          // value: null makes the parameter optional
-          // squash: true avoids duplicate slashes when the paramter is not provided
-          projectPath: {value: null, squash: true},
-          projects: {value: null, squash: true}
-        }
       })
 
       .state('work-packages.copy', {
@@ -120,11 +120,6 @@ openprojectModule
 
       .state('work-packages.edit', {
         url: '/{projects}/{projectPath}/work_packages/{workPackageId:[0-9]+}/edit',
-        params: {
-          projectPath: {value: null, squash: true},
-          projects: {value: null, squash: true},
-        },
-
         onEnter: ($state, $timeout, $stateParams, wpEditModeState:WorkPackageEditModeStateService) => {
           wpEditModeState.start();
           // Transitioning to a new state may cause a reported issue
@@ -135,7 +130,7 @@ openprojectModule
       })
 
       .state('work-packages.show', {
-        url: '/work_packages/{workPackageId:[0-9]+}?query_id&query_props',
+        url: '/work_packages/{workPackageId:[0-9]+}',
         templateUrl: '/components/routing/wp-show/wp.show.html',
         controller: 'WorkPackageShowController',
         controllerAs: '$ctrl',
@@ -165,8 +160,6 @@ openprojectModule
         params: {
           // value: null makes the parameter optional
           // squash: true avoids duplicate slashes when the paramter is not provided
-          projectPath: {value: null, squash: true},
-          projects: {value: null, squash: true},
           query_id: {value: null},
           query_props: {value: null}
         },
